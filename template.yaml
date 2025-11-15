@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Simple Serverless Task Scheduler
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: python3.11
+
+Resources:
+
+  TaskSchedulerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      CodeUri: hello_world/
+      Environment:
+        Variables:
+          SOURCE_EMAIL: "adityaayan.singh2026@gmail.com"
+          TARGET_EMAIL: "adityaayansingh0612@gmail.com"
+      Policies:
+        - SESCrudPolicy:
+            IdentityName: "your_verified_email@gmail.com"
+      Events:
+        ScheduleEvent:
+          Type: Schedule
+          Properties:
+            Schedule: cron(* * * * ? *)
